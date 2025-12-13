@@ -33,6 +33,10 @@ async def ping(ctx: ApplicationContext):
     )
     await ctx.respond(view=v)
 
+# Add commands to the bot
 bot.add_application_command(ping)
+
+# Add extensions to the bot
+bot.load_extension("commands.create_goal")
 
 bot.run(environ["DISCORD_BOT_TOKEN"])
