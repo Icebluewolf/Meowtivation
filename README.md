@@ -30,3 +30,9 @@ This will also promote meaningful tasks and not low effort tasks to gain points.
 ## Technology
 Meowtivation is made with Py-cord in Python. It uses a Postgres database.
 As of know most of the art is from free to use assets online.
+
+## Info
+[Terms Of Service](https://gist.github.com/Icebluewolf/4d5f7fe7de3cf3ff63d5640fb82c9de2)\
+[Privacy Policy](https://gist.github.com/Icebluewolf/36fe57f9596a34900d8a601a3ec64c2e)\
+Developer `icewolfy` (`451848182327148554`)
+Support Server : https://discord.gg/f39cJ9D
