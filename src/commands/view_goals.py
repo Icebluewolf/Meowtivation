@@ -4,8 +4,8 @@ from models.goal import Goal
 from utils import component_factory as cf
 
 
-@slash_command(description="Create A New Personal Goal")
-async def goal_list(ctx: ApplicationContext, completed: Option(bool, description="List Completed Goals", default=False)):
+@slash_command(description="List All Of Your Goals")
+async def goal_list(ctx: ApplicationContext, completed: Option(bool, description="Include Completed Goals", default=False)):
     goals = await Goal.fetch_user_goals(ctx.author.id, completed)
 
     if len(goals) == 0:
