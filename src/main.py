@@ -38,5 +38,6 @@ bot.add_application_command(ping)
 
 # Add extensions to the bot
 bot.load_extension("commands.create_goal")
+bot.load_extension("commands.view_goals")
 
 bot.run(environ["DISCORD_BOT_TOKEN"])
