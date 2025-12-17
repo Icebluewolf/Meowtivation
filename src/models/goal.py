@@ -28,6 +28,7 @@ class Goal:
         self.completed = False
         self.reset_at = None
         self.id = None
+        self.created = None
 
     def display(self) -> ui.DesignerView:
         output = dedent(f"""\
@@ -107,9 +108,9 @@ class Goal:
     @staticmethod
     async def fetch_user_goals(user_id: int, completed: bool) -> list[Self]:
         if completed:
-            sql = "SELECT id, discord_user, text, reward, completed, repeat, reset_at FROM goal WHERE discord_user=$1;"
+            sql = "SELECT id, discord_user, text, reward, completed, repeat, reset_at, created FROM goal WHERE discord_user=$1 ORDER BY created;"
         else:
-            sql = "SELECT id, discord_user, text, reward, completed, repeat, reset_at FROM goal WHERE discord_user=$1 AND completed=false;"
+            sql = "SELECT id, discord_user, text, reward, completed, repeat, reset_at, created FROM goal WHERE discord_user=$1 AND completed=false ORDER BY created;"
         rows = await db.fetch(sql, user_id)
         return [await Goal.from_db(r) for r in rows]
 
@@ -119,6 +120,7 @@ class Goal:
         g.completed = row["completed"]
         g.reset_at = row["reset_at"]
         g.id = row["id"]
+        g.created = row["created"]
 
         return g
 
