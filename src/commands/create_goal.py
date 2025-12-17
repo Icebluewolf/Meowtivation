@@ -61,6 +61,9 @@ async def on_interaction(interaction: Interaction):
 
 async def complete_goal_button(interaction: Interaction) -> None:
     g = await Goal.fetch(interaction.message.get_component("complete_goal").id)
+    if g.user != interaction.user.id:
+        await interaction.respond(view=ui.DesignerView(await cf.fail("You cannot complete other users goals")), ephemeral=True)
+        return
     await g.edit(completed=True)
     await interaction.edit(view=g.display())
 
