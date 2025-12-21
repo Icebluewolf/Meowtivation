@@ -36,3 +36,7 @@ As of know most of the art is from free to use assets online.
 [Privacy Policy](https://gist.github.com/Icebluewolf/36fe57f9596a34900d8a601a3ec64c2e)\
 Developer `icewolfy` (`451848182327148554`)
 Support Server : https://discord.gg/f39cJ9D
+
+## Graphics Attributions
+[Chocolate chip icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/chocolate-chip "chocolate chip icons")
+With modification

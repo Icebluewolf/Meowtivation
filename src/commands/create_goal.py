@@ -2,6 +2,7 @@ from discord import Bot, ApplicationContext, SelectOption, slash_command, Intera
 from discord import ui
 
 from models.goal import Goal, RepeatType
+from models.incentive import Incentive
 from utils import component_factory as cf
 
 
@@ -57,6 +58,8 @@ async def goal(ctx: ApplicationContext):
 async def on_interaction(interaction: Interaction):
     if interaction.custom_id == "complete_goal":
         await complete_goal_button(interaction)
+    elif interaction.custom_id == "add_incentive":
+        await add_incentive_button(interaction)
 
 
 async def complete_goal_button(interaction: Interaction) -> None:
@@ -65,6 +68,19 @@ async def complete_goal_button(interaction: Interaction) -> None:
         await interaction.respond(view=ui.DesignerView(await cf.fail("You cannot complete other users goals")), ephemeral=True)
         return
     await g.edit(completed=True)
+    await interaction.edit(view=g.display())
+
+
+async def add_incentive_button(interaction: Interaction) -> None:
+    g: Goal = await Goal.fetch(interaction.message.get_component("complete_goal").id)
+    if g.user == interaction.user.id:
+        await interaction.respond(view=ui.DesignerView(await cf.fail("You cannot add a chocolate nibble to your own goal")),
+                                  ephemeral=True)
+        return
+
+    incentive = Incentive(interaction.user.id, g.id)
+    await incentive.create()
+    g.incentives.append(incentive)
     await interaction.edit(view=g.display())
 
 

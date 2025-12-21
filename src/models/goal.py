@@ -6,6 +6,7 @@ from asyncpg import ForeignKeyViolationError, Record
 from discord import ui, ButtonStyle
 
 from utils.database import database as db
+from models.incentive import Incentive
 
 
 class RepeatType(Enum):
@@ -30,12 +31,15 @@ class Goal:
         self.id = None
         self.created = None
 
+        self.incentives: list[Incentive] = []
+
     def display(self) -> ui.DesignerView:
         output = dedent(f"""\
             ## {"You Did It" if self.completed else "You Got This"}!
             **Goal:** {self.text}
             **Repeat:** {self.repeat.display()}
             **Reward:** {self.reward} Crumbs
+            {"\n".join(["<@"+str(i.sender)+">" for i in self.incentives])}
         """)
 
         v = ui.DesignerView(
@@ -43,7 +47,8 @@ class Goal:
                 ui.TextDisplay(output),
                 ui.ActionRow(
                     ui.Button(label="Complete", style=ButtonStyle.success, custom_id="complete_goal", id=self.id,
-                              disabled=self.completed)
+                              disabled=self.completed),
+                    ui.Button(emoji="<:chip:1450994486275735562>", label="Add Chocolate Nibble", style=ButtonStyle.secondary, custom_id="add_incentive"),
                 )
             ),
         )
@@ -100,8 +105,9 @@ class Goal:
     async def fetch(id: int) -> Self:
         r = Goal._cache.get(id)
         if r is None:
-            sql = "SELECT id, discord_user, text, reward, completed, repeat, reset_at FROM goal WHERE id=$1"
+            sql = "SELECT id, discord_user, text, reward, completed, repeat, reset_at, created FROM goal WHERE id=$1"
             r = await Goal.from_db(await db.fetch_one(sql, id))
+            r.incentives = await Incentive.fetch_all_goal(id)
 
         return r
 
