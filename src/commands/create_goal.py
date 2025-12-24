@@ -1,4 +1,4 @@
-from discord import Bot, ApplicationContext, SelectOption, slash_command, Interaction
+from discord import Bot, ApplicationContext, SelectOption, slash_command, Interaction, AllowedMentions
 from discord import ui
 
 from models.goal import Goal, RepeatType
@@ -46,7 +46,7 @@ class CreateGoal(ui.DesignerModal):
         g = Goal(interaction.user.id, self.goal_text.value, RepeatType(int(self.repeat_select.values[0])), crumbs)
         await g.create()
 
-        await interaction.respond(view=g.display(), allowed_mentions=None)
+        await interaction.respond(view=g.display(), allowed_mentions=AllowedMentions.none())
 
 
 @slash_command(description="Create A New Personal Goal")

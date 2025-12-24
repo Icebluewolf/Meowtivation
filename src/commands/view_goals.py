@@ -1,4 +1,4 @@
-from discord import Bot, ApplicationContext, slash_command, Interaction, Option, SlashCommand, ui
+from discord import Bot, ApplicationContext, slash_command, Interaction, Option, SlashCommand, ui, AllowedMentions
 
 from models.goal import Goal
 from utils import component_factory as cf
@@ -96,7 +96,7 @@ async def on_interaction(interaction: Interaction):
 
 async def view_goal_button(interaction: Interaction) -> None:
     g = await Goal.fetch(interaction.message.get_component(interaction.custom_id).id)
-    await interaction.respond(view=g.display(), allowed_mentions=None)
+    await interaction.respond(view=g.display(), allowed_mentions=AllowedMentions.none())
 
 
 async def view_goal_list_refresh_button(interaction: Interaction) -> None:
