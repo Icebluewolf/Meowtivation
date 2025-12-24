@@ -38,8 +38,7 @@ class Goal:
             ## {"You Did It" if self.completed else "You Got This"}!
             **Goal:** {self.text}
             **Repeat:** {self.repeat.display()}
-            **Reward:** {self.reward} Crumbs
-            {"\n".join(["<@"+str(i.sender)+">" for i in self.incentives])}
+            **Reward:** {self.reward} {f"(+{0.1 * self.reward * len(self.incentives):.2f})" if len(self.incentives) > 0 else ""} Crumbs
         """)
 
         v = ui.DesignerView(
@@ -52,6 +51,12 @@ class Goal:
                 )
             ),
         )
+
+        if len(self.incentives) > 0:
+            c = ui.Container(
+                ui.TextDisplay(f"These users gave a little boost because they want to see <@{self.user}> succeed!\n" + "\n".join(["<@"+str(i.sender)+"> Added a chocolate nibble to the reward" for i in self.incentives]))
+            )
+            v.add_item(c)
         return v
 
     def short_display(self) -> ui.Section:

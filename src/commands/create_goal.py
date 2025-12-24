@@ -46,7 +46,7 @@ class CreateGoal(ui.DesignerModal):
         g = Goal(interaction.user.id, self.goal_text.value, RepeatType(int(self.repeat_select.values[0])), crumbs)
         await g.create()
 
-        await interaction.respond(view=g.display())
+        await interaction.respond(view=g.display(), allowed_mentions=None)
 
 
 @slash_command(description="Create A New Personal Goal")

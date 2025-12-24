@@ -96,7 +96,7 @@ async def on_interaction(interaction: Interaction):
 
 async def view_goal_button(interaction: Interaction) -> None:
     g = await Goal.fetch(interaction.message.get_component(interaction.custom_id).id)
-    await interaction.respond(view=g.display())
+    await interaction.respond(view=g.display(), allowed_mentions=None)
 
 
 async def view_goal_list_refresh_button(interaction: Interaction) -> None:
