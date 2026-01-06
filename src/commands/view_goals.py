@@ -34,14 +34,14 @@ class GoalListPaginator(ui.DesignerView):
             c.add_separator()
             c.add_item(goal.short_display())
 
+        self.add_item(c)
+
         if len(self.chunks) > 1:
             self.back = NavButton(forward=False)
             self.back.disabled = True
             self.page_display = ui.Button(label=f"1/{len(self.chunks)}", disabled=True)
             self.forward = NavButton(forward=True)
-
-        self.add_item(c)
-        self.add_item(ui.ActionRow(self.back, self.page_display, self.forward))
+            self.add_item(ui.ActionRow(self.back, self.page_display, self.forward))
 
     async def nav(self, interaction: Interaction, forward: bool):
         self.interaction = interaction
