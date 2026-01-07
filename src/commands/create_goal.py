@@ -3,6 +3,7 @@ from discord import ui
 
 from models.goal import Goal, RepeatType
 from models.incentive import Incentive
+from models.user import User
 from utils import component_factory as cf
 
 
@@ -67,7 +68,7 @@ async def complete_goal_button(interaction: Interaction) -> None:
     if g.user != interaction.user.id:
         await interaction.respond(view=ui.DesignerView(await cf.fail("You cannot complete other users goals")), ephemeral=True)
         return
-    await g.edit(completed=True)
+    await g.complete()
     await interaction.edit(view=g.display())
 
 
@@ -78,10 +79,19 @@ async def add_incentive_button(interaction: Interaction) -> None:
                                   ephemeral=True)
         return
 
+    u = await User.fetch(interaction.user.id)
+    if not await u.use_share_points(1):
+        await interaction.respond(
+            view=ui.DesignerView(await cf.fail("You Do Not Have Any Chocolate Nibbles. Every Goal You Complete Earns You One.")),
+            ephemeral=True)
+        return
+
     incentive = Incentive(interaction.user.id, g.id)
     await incentive.create()
     g.incentives.append(incentive)
     await interaction.edit(view=g.display())
+
+    await interaction.respond(view=cf.general(f"You Have {u.share_points} Chocolate Nibbles Left"), ephemeral=True)
 
 
 def setup(bot: Bot):

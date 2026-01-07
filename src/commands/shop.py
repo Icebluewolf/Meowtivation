@@ -2,6 +2,7 @@ from discord import Bot, ApplicationContext, SelectOption, slash_command, Intera
 from discord import ui
 
 from models.reward import Reward
+from models.user import User
 from utils import component_factory as cf
 
 
@@ -120,9 +121,9 @@ async def shop(ctx: ApplicationContext):
         ), ephemeral=True)
         return
 
-    crumbs = 10
+    u = await User.fetch(ctx.user.id)
 
-    await ctx.respond(view=RewardListPaginator(rewards, ctx.user.display_name, crumbs, ctx.interaction))
+    await ctx.respond(view=RewardListPaginator(rewards, ctx.user.display_name, u.points, ctx.interaction))
 
 
 @slash_command(description="Create A New Reward In The Shop")
@@ -144,7 +145,12 @@ async def shop_reward_button(interaction: Interaction):
     reward_id = int(interaction.custom_id.split("::", maxsplit=1)[1])
     reward = await Reward.fetch(reward_id)
     if reward is None:
-        await interaction.respond(view=ui.DesignerView(await cf.fail("Uh Oh! This reward was already claimed!")))
+        await interaction.respond(view=ui.DesignerView(await cf.fail("Uh Oh! This reward was already claimed!")), ephemeral=True)
+        return
+
+    u = await User.fetch(interaction.user.id)
+    if not await u.use_points(reward.cost):
+        await interaction.respond(view=ui.DesignerView(await cf.fail("You Do Not Have Enough Crumbs. Complete Goals To Earn More Crumbs")), ephemeral=True)
         return
 
     if not reward.renewable:
@@ -170,9 +176,9 @@ async def reward_list_refresh(interaction: Interaction):
         ), ephemeral=True)
         return
 
-    crumbs = 10
+    u = await User.fetch(user_id)
 
-    await interaction.edit(view=RewardListPaginator(rewards, interaction.user.display_name, crumbs, interaction))
+    await interaction.edit(view=RewardListPaginator(rewards, interaction.user.display_name, u.points, interaction))
 
 
 def setup(bot: Bot):

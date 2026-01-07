@@ -5,6 +5,7 @@ from textwrap import dedent
 from asyncpg import ForeignKeyViolationError, Record
 from discord import ui, ButtonStyle
 
+from models.user import User
 from utils.database import database as db
 from models.incentive import Incentive
 
@@ -105,6 +106,11 @@ class Goal:
             self.reward,
             self.repeat.value,
         )
+
+    async def complete(self) -> None:
+        await self.edit(completed=True)
+        u = await User.fetch(self.user)
+        await u.add_points(self.reward + self.reward * 0.1 * len(self.incentives), 1)
 
     @staticmethod
     async def fetch(id: int) -> Self:
