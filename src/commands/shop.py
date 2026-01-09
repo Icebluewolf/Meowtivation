@@ -1,3 +1,5 @@
+from random import choice, randint
+
 from discord import Bot, ApplicationContext, SelectOption, slash_command, Interaction
 from discord import ui
 
@@ -6,14 +8,37 @@ from models.user import User
 from utils import component_factory as cf
 
 
+REWARD_TEXT_PLACEHOLDER = [
+    "Eat a Chocolate Chip Cookie",
+    "Munch on a Frosted Sugar Cookie",
+    "Crunch a Ginger Snap",
+    "Devour a Salmon-Flavored Biscuit",
+    "Share a Plate of Macaroons",
+    "Lick a Bowl of Cookie Dough",
+    "Snack on a Catnip Wafer",
+    "Buy a Designer Bowtie",
+    "Purchase a Luxury Scratching Post",
+    "Order a Silk-Lined Box",
+    "Buy a New Set of Yarn Balls",
+    "Unlock the Golden Water Fountain",
+    "Purchase a Heated Nap Mat",
+    "Buy a Feather Wand Toy",
+    "Request a 10-Minute Ear Scratch",
+    "Take a Guilt-Free 4-Hour Nap",
+    "Occupy the Fresh Laundry Basket",
+    "Demand a Premium Tuna Topper",
+    "Watch 20 Minutes of Bird TV",
+]
+
+
 class CreateShopItem(ui.DesignerModal):
     def __init__(self):
         super().__init__(title="Create A Reward Item")
 
-        self.reward_text = ui.InputText(placeholder="Eat A Cookie")
+        self.reward_text = ui.InputText(placeholder=choice(REWARD_TEXT_PLACEHOLDER))
         self.add_item(ui.Label("Reward", self.reward_text,
                                description="Something that helps motivate you to complete your goals"))
-        self.cost_text = ui.InputText(placeholder="10", max_length=6)
+        self.cost_text = ui.InputText(placeholder=str(randint(10, 50)), max_length=6)
         self.add_item(ui.Label("Crumb Cost", self.cost_text,
                                description="How many crumbs do you want to spend to redeem this reward? Bigger rewards should have higher costs."),)
         self.renewable_select = ui.Select(options=[
