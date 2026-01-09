@@ -112,7 +112,7 @@ async def add_incentive_button(interaction: Interaction) -> None:
     g.incentives.append(incentive)
     await interaction.edit(view=g.display())
 
-    await interaction.respond(view=cf.general(f"You Have {u.share_points} Chocolate Nibbles Left"), ephemeral=True)
+    await interaction.respond(view=await cf.general(f"You Have {u.share_points} Chocolate Nibbles Left"), ephemeral=True)
 
 
 def setup(bot: Bot):

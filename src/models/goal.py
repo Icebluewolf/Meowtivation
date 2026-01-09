@@ -48,7 +48,7 @@ class Goal:
 
     def display(self) -> ui.DesignerView:
         output = dedent(f"""\
-            ## {"You Did It" if self.completed else "You Got This"}!
+            ## {"You Did It" if self.completed else "You Got This"} <@{self.user}>!
             **Goal:** {self.text}
             **Repeat:** {self.repeat.display()}
             **Reward:** {self.reward} {f"(+{0.1 * self.reward * len(self.incentives):.2f})" if len(self.incentives) > 0 else ""} Crumbs
