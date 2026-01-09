@@ -75,10 +75,10 @@ async def goal_list(ctx: ApplicationContext, completed: Option(bool, description
 
     if len(goals) == 0:
         if completed:
-            await ctx.respond(await cf.fail(f"You have not made any goals! Use {ctx.bot.get_command("goal", None, SlashCommand).mention} to get started."), ephemeral=True)
+            await ctx.respond(view=ui.DesignerView(await cf.fail(f"You have not made any goals! Use {ctx.bot.get_command("goal", None, SlashCommand).mention} to get started.")), ephemeral=True)
             return
         else:
-            await ctx.respond(await cf.fail(f"You dont have any uncompleted goals. Use {ctx.bot.get_command("goal", None, SlashCommand).mention} to get another."), ephemeral=True)
+            await ctx.respond(view=ui.DesignerView(await cf.fail(f"You dont have any uncompleted goals. Use {ctx.bot.get_command("goal", None, SlashCommand).mention} to get another.")), ephemeral=True)
             return
 
     await ctx.respond(view=GoalListPaginator(goals, ctx.author.display_name, ctx.interaction))
