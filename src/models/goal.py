@@ -12,10 +12,22 @@ from models.incentive import Incentive
 
 class RepeatType(Enum):
     NEVER = 0
+    DAILY = 1
+    WEEKLY = 2
+    MONTHLY = 3
+    YEARLY = 4
 
     def display(self):
         if self == RepeatType.NEVER:
             return "Never"
+        elif self == RepeatType.DAILY:
+            return "Daily At Midnight UTC"
+        elif self == RepeatType.WEEKLY:
+            return "Weekly On Mondays At Midnight UTC"
+        elif self == RepeatType.MONTHLY:
+            return "Monthly On The 1st At Midnight UTC"
+        elif self == RepeatType.YEARLY:
+            return "Yearly On January 1st At Midnight UTC"
 
 
 class Goal:

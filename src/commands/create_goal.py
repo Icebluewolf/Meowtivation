@@ -16,11 +16,11 @@ class CreateGoal(ui.DesignerModal):
 
         self.repeat_select = ui.Select(options=[
                                 SelectOption(label="Never", description="A one time goal", default=True, value="0"),
-                                SelectOption(label="Daily", description="Repeat once a day", value="1"),
-                                SelectOption(label="Weekly", description="Repeat once a week on this day", value="2"),
-                                SelectOption(label="Monthly", description="Repeat once a month on this day", value="3"),
-                                SelectOption(label="Custom (Set After Submitting)",
-                                             description="More fine grained control in a separate panel",
+                                SelectOption(label="Daily", description="Repeat once a day at midnight UTC", value="1"),
+                                SelectOption(label="Weekly", description="Repeat once a week on Mondays at midnight UTC", value="2"),
+                                SelectOption(label="Monthly", description="Repeat once a month on the 1st at midnight UTC", value="3"),
+                                SelectOption(label="Yearly",
+                                             description="Repeat once a year on January 1st at midnight UTC",
                                              value="4"),
                             ])
         self.add_item(ui.Label("Repeat", self.repeat_select))
